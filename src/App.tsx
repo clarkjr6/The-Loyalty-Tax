@@ -73,17 +73,9 @@ export default function App() {
               <PurdueMotionP size={44} variant="gold" className="group-hover:rotate-6 transition-transform" />
             </button>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-black text-sm uppercase tracking-wider text-stone-100">
-                  Purdue Themed Graphic Studio
-                </span>
-                <span className="text-[10px] bg-[#CEB888] text-black font-black px-1.5 py-0.5 rounded uppercase">
-                  BOILERMAKER
-                </span>
-              </div>
-              <p className="text-xs text-stone-400 mt-0.5">
-                Faithful high-resolution adaptation of <em>"The Salary Gap: Why Standard Raises Can't Catch the Market"</em>
-              </p>
+              <h1 className="font-black text-base sm:text-lg tracking-tight text-stone-100">
+                Purdue University - HR Compensation
+              </h1>
             </div>
           </div>
 
@@ -148,7 +140,7 @@ export default function App() {
               <div className="flex items-center gap-2 border-b border-stone-800 pb-3 mb-4">
                 <SledgehammerIcon size={24} />
                 <h3 className="font-black text-sm uppercase tracking-wider text-[#CEB888]">
-                  The Purdue Engineering & Compensation Breakdown
+                  THE LEGACY TAX AND THE BOILERMAKER RESOLUTION
                 </h3>
               </div>
 
@@ -191,9 +183,7 @@ export default function App() {
                     <span>The Boilermaker Resolution</span>
                   </div>
                   <p className="text-stone-400">
-                    Purdue STEM graduates and forward-thinking engineering leaders shatter this ceiling by benchmarking promotion
-                    jumps to market rates (eliminating the 10% cap) and reserving differentiated 5%+ merit rewards for top
-                    performers.
+                    By benchmarking promotions to market rates and providing 5%+ merit awards to the top performers, Purdue will become a national leader in eliminating the &ldquo;loyalty tax,&rdquo; thus rewarding the sustained contributions of employees who have dedicated years of service to the university&rsquo;s long-term success.
                   </p>
                 </div>
               </div>

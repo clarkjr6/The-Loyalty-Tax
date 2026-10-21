@@ -304,14 +304,16 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
 
         <g transform={`translate(${getX(15)}, ${getY(points[15].internalSalary)})`}>
           <text
-            x="-4"
-            y="18"
+            x="-6"
+            y="32"
             textAnchor="end"
             fill={internalColor}
             fontSize="11"
             fontWeight="900"
+            letterSpacing="0.02em"
           >
-            Internal Growth (Standard)
+            <tspan x="-6" dy="0">Internal</tspan>
+            <tspan x="-6" dy="14">Growth</tspan>
           </text>
         </g>
 

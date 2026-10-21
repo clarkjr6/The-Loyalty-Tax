@@ -66,16 +66,13 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
               <PurdueMotionP size={44} variant="gold" />
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-black text-xs uppercase tracking-widest text-[#CEB888] bg-black/60 px-2 py-0.5 rounded border border-[#CEB888]/30">
-                    PURDUE BOILERMAKERS
-                  </span>
-                  <span className="text-[11px] font-semibold text-stone-400 hidden sm:inline">
-                    INSTITUTE FOR CAREER & MARKET BENCHMARKS
+                  <span className="font-black text-sm uppercase tracking-wider text-[#CEB888]">
+                    Purdue University - HR Compensation
                   </span>
                 </div>
                 <div className="text-[10px] text-stone-400 flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#CEB888]" />
-                  <span>The Persistent Pursuit of Compensation Parity</span>
+                  <span>Workforce Compensation & Market Benchmark Analysis</span>
                   <span className="text-stone-500">•</span>
                   <span className="text-[#CEB888] font-bold">1869</span>
                 </div>
@@ -95,7 +92,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
           {/* Main Title & Subtitle Matching Original Graphic Exactly */}
           <div className="mt-3">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight">
-              The Salary Gap:{' '}
+              The Legacy Tax:{' '}
               <span
                 className={`text-transparent bg-clip-text ${
                   isLight
@@ -245,9 +242,9 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
         {/* --- FOOTER STRIP --- */}
         <footer className="mt-6 pt-4 border-t border-stone-800/70 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-400 gap-3">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-[#CEB888]">PURDUE UNIVERSITY</span>
-            <span>•</span>
-            <span>Engineering & STEM Career Compensation Dynamics</span>
+            <span className={`font-bold ${isLight ? 'text-[#9E7A1C]' : 'text-[#CEB888]'} tracking-wide`}>
+              CAREER COMPENSATION DYNAMICS
+            </span>
           </div>
 
           <div className="flex items-center gap-3 text-stone-400">

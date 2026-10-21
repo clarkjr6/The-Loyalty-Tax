@@ -13,7 +13,7 @@ export const CompareModal: React.FC<CompareModalProps> = ({ isOpen, onClose }) =
     {
       feature: 'Title & Framing',
       original: '"The Salary Gap: Why Standard Raises Can\'t Catch the Market"',
-      purdue: 'Purdue Boilermakers Header with official Motion P, 1869 founding date & Executive Report styling',
+      purdue: 'Purdue University - HR Compensation: "The Legacy Tax: Why Standard Raises Can\'t Catch the Market"',
     },
     {
       feature: 'Trajectory Chart',
