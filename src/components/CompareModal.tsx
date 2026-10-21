@@ -21,9 +21,9 @@ export const CompareModal: React.FC<CompareModalProps> = ({ isOpen, onClose }) =
       purdue: 'Authentic Old Gold & Black SVG chart with dynamic real-time data, hover points, and Purdue rail track pattern',
     },
     {
-      feature: 'The Stepping Stone',
-      original: 'Illustration of professional climbing from 10% raise to 20% market platform',
-      purdue: 'Boilermaker Pete / Purdue Engineer with hard hat, gold tie & steel girder steps',
+      feature: 'The Promotion Disparity',
+      original: 'Comparison of 10% promotional raise vs 20% market platform jump',
+      purdue: 'Clean step-tier architecture highlighting the 10% internal promotion ceiling vs. 20% market value tower with uncaptured delta bracket',
     },
     {
       feature: 'Merit Gauges',
