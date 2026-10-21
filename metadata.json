@@ -1,0 +1,6 @@
+{
+  "name": "Purdue Salary Gap Graphic & Visualizer",
+  "description": "An authentic Purdue Boilermakers themed infographic and interactive calculator for analyzing the career salary gap, market growth delta, and Boilermaker compensation strategies.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
