@@ -75,7 +75,7 @@ export const CompareModal: React.FC<CompareModalProps> = ({ isOpen, onClose }) =
             </div>
             <div className="rounded-lg overflow-hidden border border-stone-800/80 bg-stone-900">
               <img
-                src="/assets/aistudio/image_4b166ba9.png"
+                src={`${import.meta.env.BASE_URL}assets/aistudio/image_4b166ba9.png`}
                 alt="Original Salary Gap Graphic"
                 className="w-full h-auto object-contain"
               />
