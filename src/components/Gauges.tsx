@@ -15,17 +15,17 @@ export const Gauges: React.FC<GaugesProps> = ({
 
   return (
     <div className="w-full flex flex-col items-center" data-testid="stagnant-merit-gauges">
-      <div className="w-full flex items-center justify-center gap-4 sm:gap-6 my-2">
+      <div className="w-full flex items-center justify-center gap-3 sm:gap-5 my-0.5">
         {/* Gauge 1: Internal Merit Budgets */}
-        <div className="flex-1 flex flex-col items-center max-w-[160px]">
+        <div className="flex-1 flex flex-col items-center max-w-[140px]">
           <span
-            className={`text-[10px] font-bold tracking-tight mb-1 text-center h-4 ${
+            className={`text-[9.5px] font-bold tracking-tight mb-0.5 text-center h-3.5 ${
               isLight ? 'text-stone-700' : 'text-stone-300'
             }`}
           >
             Barely exceeds
           </span>
-          <div className="relative w-32 h-18">
+          <div className="relative w-28 h-15">
             <svg viewBox="0 0 120 72" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="meritArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -87,15 +87,15 @@ export const Gauges: React.FC<GaugesProps> = ({
         </div>
 
         {/* Gauge 2: Market Growth */}
-        <div className="flex-1 flex flex-col items-center max-w-[160px]">
+        <div className="flex-1 flex flex-col items-center max-w-[140px]">
           <span
-            className={`text-[10px] font-bold tracking-tight mb-1 text-center h-4 leading-none flex items-center justify-center ${
+            className={`text-[9.5px] font-bold tracking-tight mb-0.5 text-center h-3.5 leading-none flex items-center justify-center ${
               isLight ? 'text-stone-700' : 'text-stone-300'
             }`}
           >
             Keeps employees locked
           </span>
-          <div className="relative w-32 h-18">
+          <div className="relative w-28 h-15">
             <svg viewBox="0 0 120 72" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="marketArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -157,7 +157,7 @@ export const Gauges: React.FC<GaugesProps> = ({
             </svg>
           </div>
           <span
-            className={`text-[10px] font-black uppercase tracking-wider text-center mt-2 leading-tight ${
+            className={`text-[9.5px] font-black uppercase tracking-wider text-center mt-1.5 leading-tight ${
               isLight ? 'text-stone-900' : 'text-stone-100'
             }`}
           >
@@ -170,13 +170,12 @@ export const Gauges: React.FC<GaugesProps> = ({
 
       {/* Under-gauge summary description matching original graphic */}
       <p
-        className={`text-center text-xs leading-snug px-3 mt-2 ${
+        className={`text-center text-[10.5px] leading-snug px-2 mt-0.5 ${
           isLight ? 'text-stone-700' : 'text-stone-300'
         }`}
       >
-        <span className="font-extrabold text-stone-200">{meritPct}% merit budgets</span> barely exceed{' '}
-        <span className="font-extrabold text-teal-400">{marketGrowthPct}% market growth</span>, keeping employees
-        locked in their current percentiles.
+        <span className="font-extrabold text-stone-200">{meritPct}% merit</span> barely exceeds{' '}
+        <span className="font-extrabold text-teal-400">{marketGrowthPct}% market inflation</span>, locking percentiles.
       </p>
     </div>
   );

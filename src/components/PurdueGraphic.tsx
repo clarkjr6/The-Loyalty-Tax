@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { TrajectoryChart } from './TrajectoryChart';
 import { PromotionLadder } from './PromotionLadder';
 import { Gauges } from './Gauges';
-import { SolutionPillars } from './SolutionPillars';
+import { InitialMarketLag } from './InitialMarketLag';
 import { TrajectoryResult, SalaryConfig, formatCurrency } from '../utils/salaryCalculations';
 
 interface PurdueGraphicProps {
@@ -84,11 +84,11 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
           </div>
         </header>
 
-        {/* --- THREE CORE PANELS (Exact Layout Homage) --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+        {/* --- CORE PANELS --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
           {/* PANEL 1 (LEFT): THE PROBLEM: THE PERPETUAL DELTA */}
           <div
-            className={`lg:col-span-6 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
+            className={`lg:col-span-8 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
               isLight
                 ? 'bg-stone-50 border-stone-200'
                 : isBlueprint
@@ -134,9 +134,9 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
             </div>
           </div>
 
-          {/* PANEL 2 (MIDDLE): TWO INSIGHT BLOCKS */}
+          {/* PANEL 2 (RIGHT): THREE CAUSES */}
           <div
-            className={`lg:col-span-3 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
+            className={`lg:col-span-4 flex flex-col justify-between p-3 sm:p-4 rounded-xl border ${
               isLight
                 ? 'bg-stone-50 border-stone-200'
                 : isBlueprint
@@ -144,13 +144,32 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 : 'bg-stone-900/60 border-stone-800'
             }`}
           >
-            {/* Top Section: Stepping Up Promotion Ladder */}
-            <div className="pb-5 border-b border-stone-800">
-              <div className="mb-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-[#CEB888] block">
-                  PROMOTION DISPARITY:
-                </span>
-                <h3 className="text-sm font-black tracking-tight">THE PROMOTION STEPPING DELTA</h3>
+            {/* Header: THE CAUSES */}
+            <div className="border-b border-stone-800 pb-1.5 mb-2">
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#CEB888] block">
+                THE CAUSES:
+              </span>
+            </div>
+
+            {/* Cause 1: Initial Market Lag */}
+            <div className="pb-2.5 border-b border-stone-800/70">
+              <div className="mb-1 text-center">
+                <h3 className="text-xs sm:text-sm font-black tracking-tight uppercase">
+                  INITIAL MARKET LAG
+                </h3>
+              </div>
+              <InitialMarketLag
+                lagPct={20}
+                theme={theme}
+              />
+            </div>
+
+            {/* Cause 2: Stepping Up Promotion Ladder */}
+            <div className="py-2.5 border-b border-stone-800/70">
+              <div className="mb-1 text-center">
+                <h3 className="text-xs sm:text-sm font-black tracking-tight uppercase">
+                  THE PROMOTION STEPPING DELTA
+                </h3>
               </div>
               <PromotionLadder
                 promoRaisePct={config.promoRaisePercent}
@@ -159,8 +178,8 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
               />
             </div>
 
-            {/* Bottom Section: Stagnant Merit vs Market Movement Gauges */}
-            <div className="pt-4">
+            {/* Cause 3: Stagnant Merit vs Market Movement Gauges */}
+            <div className="pt-2">
               <div className="mb-1 text-center">
                 <h3 className="text-xs sm:text-sm font-black tracking-tight uppercase">
                   STAGNANT MERIT VS. MARKET MOVEMENT
@@ -170,33 +189,6 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 meritPct={config.annualMeritPercent}
                 marketGrowthPct={config.annualMarketInflationPercent}
                 theme={theme}
-              />
-            </div>
-          </div>
-
-          {/* PANEL 3 (RIGHT): THE SOLUTION: CLOSING THE DISTANCE */}
-          <div
-            className={`lg:col-span-3 flex flex-col p-4 sm:p-5 rounded-xl border ${
-              isLight
-                ? 'bg-stone-50 border-stone-200'
-                : isBlueprint
-                ? 'bg-blue-950/40 border-blue-900/60'
-                : 'bg-stone-900/60 border-stone-800'
-            }`}
-          >
-            <div className="border-b border-stone-800 pb-2 mb-3">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#CEB888] block">
-                THE SOLUTION:
-              </span>
-              <h2 className="text-base sm:text-lg font-black tracking-tight">CLOSING THE DISTANCE</h2>
-            </div>
-
-            {/* The 3 Solution Pillars */}
-            <div className="flex-1 flex flex-col justify-around">
-              <SolutionPillars
-                theme={theme}
-                activePillar={activePillar}
-                onSelectPillar={onSelectPillar}
               />
             </div>
           </div>

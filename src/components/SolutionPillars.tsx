@@ -5,12 +5,14 @@ interface SolutionPillarsProps {
   theme?: 'dark' | 'light' | 'blueprint';
   activePillar?: number | null;
   onSelectPillar?: (index: number) => void;
+  orientation?: 'vertical' | 'horizontal';
 }
 
 export const SolutionPillars: React.FC<SolutionPillarsProps> = ({
   theme = 'dark',
   activePillar,
   onSelectPillar,
+  orientation = 'horizontal',
 }) => {
   const isLight = theme === 'light';
 
@@ -133,7 +135,12 @@ export const SolutionPillars: React.FC<SolutionPillarsProps> = ({
   ];
 
   return (
-    <div className="flex flex-col gap-4 w-full" data-testid="solution-pillars">
+    <div
+      className={`${
+        orientation === 'horizontal' ? 'grid grid-cols-1 md:grid-cols-3 gap-4' : 'flex flex-col gap-4'
+      } w-full`}
+      data-testid="solution-pillars"
+    >
       {pillars.map((pillar, idx) => {
         const isSelected = activePillar === idx;
         return (

@@ -9,6 +9,7 @@ import { PurdueMotionP, BoilermakerSpecialTrainIcon, SledgehammerIcon } from './
 import { PurdueGraphic } from './components/PurdueGraphic';
 import { SimulatorControls } from './components/SimulatorControls';
 import { ExportToolbar } from './components/ExportToolbar';
+import { SolutionPillars } from './components/SolutionPillars';
 import {
   DEFAULT_SALARY_CONFIG,
   SalaryConfig,
@@ -92,58 +93,23 @@ export default function App() {
               onToggleBoilermakerCurve={handleToggleBoilermaker}
             />
 
-            {/* Purdue Boilermaker Strategic Analysis Insights Card */}
-            <div className="bg-stone-900/90 border border-[#CEB888]/40 rounded-xl p-5 text-stone-200 shadow-xl">
-              <div className="flex items-center gap-2 border-b border-stone-800 pb-3 mb-4">
-                <SledgehammerIcon size={24} />
-                <h3 className="font-black text-sm uppercase tracking-wider text-[#CEB888]">
-                  THE LOYALTY TAX AND THE BOILERMAKER RESOLUTION
+            {/* THE SOLUTION: CLOSING THE DISTANCE (Horizontal Across Bottom) */}
+            <div className="bg-stone-900/90 border border-[#CEB888]/40 rounded-xl p-5 sm:p-6 text-stone-200 shadow-xl">
+              <div className="border-b border-stone-800 pb-3 mb-4">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#CEB888] block">
+                  THE SOLUTION:
+                </span>
+                <h3 className="text-base sm:text-lg font-black tracking-tight text-stone-100 uppercase">
+                  CLOSING THE DISTANCE
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs leading-relaxed">
-                <div className="bg-stone-950 p-4 rounded-lg border border-stone-800/80">
-                  <div className="flex items-center gap-2 font-bold text-stone-100 mb-2">
-                    <span className="w-5 h-5 rounded-full bg-orange-950 text-orange-400 flex items-center justify-center font-black text-[10px]">
-                      1
-                    </span>
-                    <span>The Compound Effect of Merit vs. Inflation</span>
-                  </div>
-                  <p className="text-stone-400">
-                    With an internal merit budget of <strong className="text-stone-200">{config.annualMeritPercent}%</strong>{' '}
-                    and external market growth of <strong className="text-teal-400">{config.annualMarketInflationPercent}%</strong>,
-                    the net compounding margin is barely 0.5% per year. Over a 15-year timeline, this fails to overcome initial
-                    market disparities.
-                  </p>
-                </div>
-
-                <div className="bg-stone-950 p-4 rounded-lg border border-stone-800/80">
-                  <div className="flex items-center gap-2 font-bold text-stone-100 mb-2">
-                    <span className="w-5 h-5 rounded-full bg-amber-950 text-amber-400 flex items-center justify-center font-black text-[10px]">
-                      2
-                    </span>
-                    <span>The Promotion Stepping Paradox</span>
-                  </div>
-                  <p className="text-stone-400">
-                    The single largest widening event happens at promotion milestones. Standard corporate policy enforces an
-                    artificial cap of <strong className="text-amber-400">+{config.promoRaisePercent}%</strong>, while the open
-                    market revalues that new title at <strong className="text-teal-400">+{config.marketPromoJumpPercent}%</strong>.
-                    Each promotion ironically widens the dollar gap.
-                  </p>
-                </div>
-
-                <div className="bg-stone-950 p-4 rounded-lg border border-stone-800/80">
-                  <div className="flex items-center gap-2 font-bold text-stone-100 mb-2">
-                    <span className="w-5 h-5 rounded-full bg-[#CEB888]/20 text-[#CEB888] flex items-center justify-center font-black text-[10px]">
-                      3
-                    </span>
-                    <span>The Boilermaker Resolution</span>
-                  </div>
-                  <p className="text-stone-400">
-                    By benchmarking promotions to market rates and providing 5%+ merit awards to the top performers, Purdue will become a national leader in eliminating the &ldquo;loyalty tax,&rdquo; thus rewarding the sustained contributions of employees who have dedicated years of service to the university&rsquo;s long-term success.
-                  </p>
-                </div>
-              </div>
+              <SolutionPillars
+                theme="dark"
+                orientation="horizontal"
+                activePillar={activePillar}
+                onSelectPillar={(idx) => setActivePillar(activePillar === idx ? null : idx)}
+              />
             </div>
           </div>
         )}

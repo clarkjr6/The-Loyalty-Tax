@@ -18,7 +18,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
   if (!points || points.length === 0) return null;
 
   // SVG viewBox coordinates
-  const width = 640;
+  const width = 760;
   const height = 380;
   const padding = { top: 45, right: 35, bottom: 55, left: 45 };
 
@@ -202,13 +202,14 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
         {/* 1. Year 2: 2.5% Market Inflation Annual Increase */}
         <g transform={`translate(${getX(2.2)}, ${getY(points[2].marketSalary)})`}>
           <circle cx="0" cy="0" r="5" fill={isLight ? '#FFFFFF' : '#141414'} stroke={marketColor} strokeWidth="2.5" />
-          <text x="-4" y="-22" fill={textColor} fontSize="11" fontWeight="900">
+          <line x1="0" y1="-5" x2="0" y2="-18" stroke={marketColor} strokeWidth="1.5" strokeDasharray="2 2" />
+          <text x="-2" y="-32" fill={textColor} fontSize="11" fontWeight="900" textAnchor="middle">
             2.5%
           </text>
-          <text x="-4" y="-12" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="600">
+          <text x="-2" y="-22" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="700" textAnchor="middle">
             Market Inflation
           </text>
-          <text x="-4" y="-3" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="600">
+          <text x="-2" y="-13" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="600" textAnchor="middle">
             Annual Increase
           </text>
         </g>
@@ -216,23 +217,21 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
         {/* 2. Year 2: 3% Merit Annual Increase */}
         <g transform={`translate(${getX(2.2)}, ${getY(points[2].internalSalary)})`}>
           <circle cx="0" cy="0" r="5" fill={isLight ? '#FFFFFF' : '#141414'} stroke={internalColor} strokeWidth="2.5" />
-          <text x="6" y="16" fill={textColor} fontSize="11" fontWeight="900">
+          <line x1="0" y1="5" x2="0" y2="18" stroke={internalColor} strokeWidth="1.5" strokeDasharray="2 2" />
+          <text x="2" y="28" fill={textColor} fontSize="11" fontWeight="900" textAnchor="middle">
             3%
           </text>
-          <text x="6" y="26" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="600">
-            Merit Annual
-          </text>
-          <text x="6" y="35" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="600">
-            Increase
+          <text x="2" y="38" fill={isLight ? '#44403C' : '#D1D5DB'} fontSize="8" fontWeight="700" textAnchor="middle">
+            Merit Annual Increase
           </text>
         </g>
 
-        {/* 3. Year 5: 20% Market Value Increase */}
+        {/* 3. Year 5: 15% Market Value Increase */}
         <g transform={`translate(${getX(5)}, ${getY(points[5].marketSalary)})`}>
           <circle cx="0" cy="0" r="6" fill={marketColor} stroke="#000" strokeWidth="2" />
           <line x1="0" y1="0" x2="0" y2="-22" stroke={marketColor} strokeWidth="1.5" strokeDasharray="2 2" />
           <text x="-16" y="-36" fill={textColor} fontSize="12" fontWeight="900">
-            20%
+            15%
           </text>
           <text x="-16" y="-25" fill={isLight ? '#44403C' : '#E7E5E4'} fontSize="8.5" fontWeight="700">
             Market Value
@@ -257,12 +256,12 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
           </text>
         </g>
 
-        {/* 5. Year 10: 20% Market Value Increase */}
+        {/* 5. Year 10: 15% Market Value Increase */}
         <g transform={`translate(${getX(10)}, ${getY(points[10].marketSalary)})`}>
           <circle cx="0" cy="0" r="6" fill={marketColor} stroke="#000" strokeWidth="2" />
           <line x1="0" y1="0" x2="0" y2="-22" stroke={marketColor} strokeWidth="1.5" strokeDasharray="2 2" />
           <text x="-16" y="-36" fill={textColor} fontSize="12" fontWeight="900">
-            20%
+            15%
           </text>
           <text x="-16" y="-25" fill={isLight ? '#44403C' : '#E7E5E4'} fontSize="8.5" fontWeight="700">
             Market Value

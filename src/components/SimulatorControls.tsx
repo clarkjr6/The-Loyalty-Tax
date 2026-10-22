@@ -27,9 +27,9 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
       className="w-full bg-stone-900/90 border border-stone-800 rounded-xl p-4 text-stone-200 shadow-xl"
       data-testid="simulator-controls"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-stone-800 pb-3 mb-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-stone-800 pb-3 mb-4">
         <div className="flex items-center gap-2">
-          <Sliders className="w-5 h-5 text-[#CEB888]" />
+          <Sliders className="w-5 h-5 text-[#CEB888] shrink-0" />
           <div>
             <h3 className="font-extrabold text-sm text-stone-100 flex items-center gap-2">
               <span>Dynamic Trajectory Simulator</span>
@@ -43,8 +43,25 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
           </div>
         </div>
 
-        {/* Reset Button */}
-        <div className="flex items-center gap-2">
+        {/* Actions: Activate Solution Curve & Reset Button */}
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Solution Curve Toggle Button */}
+          <button
+            onClick={() => onToggleBoilermakerCurve(!showBoilermakerCurve)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md ${
+              showBoilermakerCurve
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border border-emerald-400 shadow-emerald-900/30'
+                : 'bg-stone-950 hover:bg-stone-800 text-stone-300 border border-stone-800'
+            }`}
+          >
+            <Sparkles className={`w-3.5 h-3.5 ${showBoilermakerCurve ? 'text-yellow-200' : 'text-[#CEB888]'}`} />
+            <span>
+              {showBoilermakerCurve ? '✓ Strategy Active' : 'Activate Solution Curve'}
+            </span>
+            <span className="text-[10px] opacity-80 font-normal hidden sm:inline">(Eliminates 10% cap + 4.8% merit)</span>
+          </button>
+
+          {/* Reset Button */}
           <button
             onClick={() => onChangeConfig({ ...DEFAULT_SALARY_CONFIG })}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-xs font-semibold transition border border-stone-700"
@@ -183,25 +200,6 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
             <span>35%</span>
           </div>
         </div>
-      </div>
-
-      {/* Boilermaker Strategy Mode Toggle */}
-      <div className="mt-4 pt-3 border-t border-stone-800 flex items-center justify-start">
-        {/* Boilermaker Outpace Strategy Toggle */}
-        <button
-          onClick={() => onToggleBoilermakerCurve(!showBoilermakerCurve)}
-          className={`flex items-center gap-2.5 px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-md ${
-            showBoilermakerCurve
-              ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border border-emerald-400 shadow-emerald-900/30'
-              : 'bg-stone-950 hover:bg-stone-800 text-stone-300 border border-stone-800'
-          }`}
-        >
-          <Sparkles className={`w-4 h-4 ${showBoilermakerCurve ? 'text-yellow-200' : 'text-[#CEB888]'}`} />
-          <span>
-            {showBoilermakerCurve ? '✓ Boilermaker Strategy Active' : 'Activate Boilermaker Solution Curve'}
-          </span>
-          <span className="text-[10px] opacity-80">(Eliminates 10% cap + 4.8% merit)</span>
-        </button>
       </div>
     </div>
   );

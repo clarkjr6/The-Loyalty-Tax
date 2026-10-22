@@ -48,7 +48,7 @@ export const DEFAULT_SALARY_CONFIG: SalaryConfig = {
   annualMarketInflationPercent: 2.5,
   promotionYears: [5, 10],
   promoRaisePercent: 10.0,
-  marketPromoJumpPercent: 20.0,
+  marketPromoJumpPercent: 15.0,
   totalYears: 15,
   boilermakerPromoRaisePercent: 20.0,
   boilermakerMeritPercent: 4.8,
