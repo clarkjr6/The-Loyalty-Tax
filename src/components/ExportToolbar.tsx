@@ -75,8 +75,22 @@ The Boilermaker Solutions:
 
   return (
     <div className="flex items-center justify-between flex-wrap gap-2.5 py-3 px-4 bg-stone-900 border border-stone-800 rounded-xl">
-      {/* Left items: Compare & Status */}
-      <div className="flex items-center gap-2">
+      {/* Left items: Stats & Compare */}
+      <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="bg-stone-950 px-3 py-1.5 rounded-lg border border-stone-800 flex items-center gap-2 text-xs">
+          <span className="text-stone-400">15-Yr Standard Lag:</span>
+          <span className="font-extrabold text-orange-400">
+            -{formatCurrency(trajectory.finalDeltaAmount)} ({trajectory.finalDeltaPercent}%)
+          </span>
+        </div>
+
+        <div className="bg-stone-950 px-3 py-1.5 rounded-lg border border-stone-800 flex items-center gap-2 text-xs">
+          <span className="text-stone-400">Cumulative Loss:</span>
+          <span className="font-extrabold text-[#CEB888]">
+            {formatCurrency(trajectory.cumulativeLostIncome)}
+          </span>
+        </div>
+
         <button
           onClick={onOpenCompare}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-[#CEB888]/20 hover:text-[#CEB888] text-stone-200 rounded-lg text-xs font-bold transition border border-stone-700"
@@ -84,10 +98,6 @@ The Boilermaker Solutions:
           <Eye className="w-3.5 h-3.5" />
           <span>Compare With Original Attachment</span>
         </button>
-
-        <span className="hidden sm:inline-block text-[11px] text-stone-400 border-l border-stone-800 pl-3">
-          15-Yr Gap: <span className="text-orange-400 font-bold">-{formatCurrency(trajectory.finalDeltaAmount)}</span>
-        </span>
       </div>
 
       {/* Right items: Export actions */}

@@ -61,43 +61,6 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${isFullscreen ? 'p-2 sm:p-4 bg-black' : 'p-3 sm:p-6 lg:p-8'} transition-colors duration-200`}>
-      {/* Top App Bar (Hidden in Fullscreen if desired or minimal) */}
-      {!isFullscreen && (
-        <header className="max-w-[1280px] mx-auto mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-stone-900/90 border border-stone-800 p-4 rounded-2xl shadow-xl">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={fireBoilermakerConfetti}
-              title="Click for Boiler Up celebration!"
-              className="group focus:outline-none focus:ring-2 focus:ring-[#CEB888] rounded-xl transition transform active:scale-95"
-            >
-              <PurdueMotionP size={44} variant="gold" className="group-hover:rotate-6 transition-transform" />
-            </button>
-            <div>
-              <h1 className="font-black text-base sm:text-lg tracking-tight text-stone-100">
-                Purdue University - HR Compensation
-              </h1>
-            </div>
-          </div>
-
-          {/* Quick Stats Badges */}
-          <div className="flex items-center gap-3 text-xs flex-wrap">
-            <div className="bg-stone-950 px-3 py-1.5 rounded-lg border border-stone-800 flex items-center gap-2">
-              <span className="text-stone-400">15-Yr Standard Lag:</span>
-              <span className="font-extrabold text-orange-400">
-                -{formatCurrency(trajectory.finalDeltaAmount)} ({trajectory.finalDeltaPercent}%)
-              </span>
-            </div>
-
-            <div className="bg-stone-950 px-3 py-1.5 rounded-lg border border-stone-800 flex items-center gap-2">
-              <span className="text-stone-400">Cumulative Loss:</span>
-              <span className="font-extrabold text-[#CEB888]">
-                {formatCurrency(trajectory.cumulativeLostIncome)}
-              </span>
-            </div>
-          </div>
-        </header>
-      )}
-
       {/* Main Content Area */}
       <main className="max-w-[1280px] mx-auto space-y-6">
         {/* Export and Action Toolbar */}
