@@ -32,7 +32,7 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({
         backgroundColor: '#0B0B0B',
       });
       const link = document.createElement('a');
-      link.download = `purdue-legacy-tax-graphic-${Date.now()}.png`;
+      link.download = `purdue-loyalty-tax-graphic-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -44,7 +44,7 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({
 
   const handleCopySummary = async () => {
     const text = `
-PURDUE UNIVERSITY - HR COMPENSATION | The Legacy Tax: Why Standard Raises Can't Catch the Market
+PURDUE UNIVERSITY - HR COMPENSATION | The Loyalty Tax: Why Standard Raises Can't Catch the Market
 =============================================================================
 • Starting Base: ${formatCurrency(config.startingSalary)} (-${config.initialLagPercent}% market lag)
 • 15-Year Standard Internal Salary: ${formatCurrency(trajectory.endInternalSalary)}

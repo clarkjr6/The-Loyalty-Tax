@@ -92,7 +92,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
           {/* Main Title & Subtitle Matching Original Graphic Exactly */}
           <div className="mt-3">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight">
-              The Legacy Tax:{' '}
+              The Loyalty Tax:{' '}
               <span
                 className={`text-transparent bg-clip-text ${
                   isLight

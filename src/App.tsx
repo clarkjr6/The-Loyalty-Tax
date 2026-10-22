@@ -100,7 +100,7 @@ export default function App() {
               <div className="flex items-center gap-2 border-b border-stone-800 pb-3 mb-4">
                 <SledgehammerIcon size={24} />
                 <h3 className="font-black text-sm uppercase tracking-wider text-[#CEB888]">
-                  THE LEGACY TAX AND THE BOILERMAKER RESOLUTION
+                  THE LOYALTY TAX AND THE BOILERMAKER RESOLUTION
                 </h3>
               </div>
 
