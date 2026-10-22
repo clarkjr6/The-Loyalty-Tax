@@ -7,8 +7,6 @@ interface SimulatorControlsProps {
   onChangeConfig: (newConfig: SalaryConfig) => void;
   showBoilermakerCurve: boolean;
   onToggleBoilermakerCurve: (val: boolean) => void;
-  theme: 'dark' | 'light' | 'blueprint';
-  onChangeTheme: (theme: 'dark' | 'light' | 'blueprint') => void;
 }
 
 export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
@@ -16,46 +14,12 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
   onChangeConfig,
   showBoilermakerCurve,
   onToggleBoilermakerCurve,
-  theme,
-  onChangeTheme,
 }) => {
   const updateField = (field: keyof SalaryConfig, value: number) => {
     onChangeConfig({
       ...config,
       [field]: value,
     });
-  };
-
-  const applyPreset = (presetName: string) => {
-    switch (presetName) {
-      case 'original':
-        onChangeConfig({ ...DEFAULT_SALARY_CONFIG });
-        break;
-      case 'purdueEng':
-        onChangeConfig({
-          ...DEFAULT_SALARY_CONFIG,
-          startingSalary: 95000,
-          initialLagPercent: 5,
-          annualMeritPercent: 3.5,
-          annualMarketInflationPercent: 2.8,
-          promoRaisePercent: 12,
-          marketPromoJumpPercent: 22,
-        });
-        break;
-      case 'techFast':
-        onChangeConfig({
-          ...DEFAULT_SALARY_CONFIG,
-          startingSalary: 110000,
-          initialLagPercent: 12,
-          annualMeritPercent: 3.2,
-          annualMarketInflationPercent: 3.0,
-          promoRaisePercent: 10,
-          marketPromoJumpPercent: 25,
-        });
-        break;
-      default:
-        break;
-    }
   };
 
   return (
@@ -79,41 +43,15 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
           </div>
         </div>
 
-        {/* Theme and Preset buttons */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {/* Preset Chips */}
-          <div className="flex items-center bg-stone-950 p-1 rounded-lg border border-stone-800 text-xs">
-            <span className="text-[10px] text-stone-400 font-bold px-2 uppercase">Presets:</span>
-            <button
-              onClick={() => applyPreset('original')}
-              className="px-2.5 py-1 rounded hover:bg-stone-800 text-stone-300 font-semibold transition"
-              title="Exact values from the original infographic"
-            >
-              Graphic Baseline
-            </button>
-            <button
-              onClick={() => applyPreset('purdueEng')}
-              className="px-2.5 py-1 rounded hover:bg-[#CEB888]/20 text-[#CEB888] font-semibold transition"
-              title="Purdue Engineering Graduate trajectory"
-            >
-              Purdue STEM
-            </button>
-            <button
-              onClick={() => applyPreset('techFast')}
-              className="px-2.5 py-1 rounded hover:bg-stone-800 text-stone-300 font-semibold transition"
-            >
-              Tech / High Growth
-            </button>
-          </div>
-
-          {/* Reset Button */}
+        {/* Reset Button */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => onChangeConfig({ ...DEFAULT_SALARY_CONFIG })}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-xs font-semibold transition border border-stone-700"
             title="Reset to default infographic numbers"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset</span>
+            <span>Reset Sliders</span>
           </button>
         </div>
       </div>
@@ -247,8 +185,8 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
         </div>
       </div>
 
-      {/* Boilermaker Strategy Mode & Themes Toolbar */}
-      <div className="mt-4 pt-3 border-t border-stone-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      {/* Boilermaker Strategy Mode Toggle */}
+      <div className="mt-4 pt-3 border-t border-stone-800 flex items-center justify-start">
         {/* Boilermaker Outpace Strategy Toggle */}
         <button
           onClick={() => onToggleBoilermakerCurve(!showBoilermakerCurve)}
@@ -264,35 +202,6 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
           </span>
           <span className="text-[10px] opacity-80">(Eliminates 10% cap + 4.8% merit)</span>
         </button>
-
-        {/* Theme Palette Switcher */}
-        <div className="flex items-center gap-1.5 bg-stone-950 p-1 rounded-lg border border-stone-800 text-xs">
-          <span className="text-[10px] text-stone-400 font-bold px-2 uppercase">Theme:</span>
-          <button
-            onClick={() => onChangeTheme('dark')}
-            className={`px-2.5 py-1 rounded font-semibold transition ${
-              theme === 'dark' ? 'bg-[#CEB888] text-black' : 'text-stone-300 hover:text-white'
-            }`}
-          >
-            Old Gold & Black
-          </button>
-          <button
-            onClick={() => onChangeTheme('light')}
-            className={`px-2.5 py-1 rounded font-semibold transition ${
-              theme === 'light' ? 'bg-amber-100 text-stone-900' : 'text-stone-300 hover:text-white'
-            }`}
-          >
-            Purdue Cream
-          </button>
-          <button
-            onClick={() => onChangeTheme('blueprint')}
-            className={`px-2.5 py-1 rounded font-semibold transition ${
-              theme === 'blueprint' ? 'bg-blue-600 text-white' : 'text-stone-300 hover:text-white'
-            }`}
-          >
-            STEM Blueprint
-          </button>
-        </div>
       </div>
     </div>
   );

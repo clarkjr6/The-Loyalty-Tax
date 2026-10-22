@@ -1,5 +1,4 @@
 import React, { forwardRef } from 'react';
-import { PurdueMotionP, BoilermakerSpecialTrainIcon } from './PurdueLogo';
 import { TrajectoryChart } from './TrajectoryChart';
 import { PromotionLadder } from './PromotionLadder';
 import { Gauges } from './Gauges';
@@ -59,38 +58,9 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
         <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#9E7A1C] via-[#CEB888] to-[#9E7A1C]" />
 
         {/* --- HEADER SECTION --- */}
-        <header className="mb-6 border-b pb-5 relative border-stone-800/80">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
-            {/* Purdue Brand Badge */}
-            <div className="flex items-center gap-3">
-              <PurdueMotionP size={44} variant="gold" />
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-black text-sm uppercase tracking-wider text-[#CEB888]">
-                    Purdue University - HR Compensation
-                  </span>
-                </div>
-                <div className="text-[10px] text-stone-400 flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#CEB888]" />
-                  <span>Workforce Compensation & Market Benchmark Analysis</span>
-                  <span className="text-stone-500">•</span>
-                  <span className="text-[#CEB888] font-bold">1869</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Locomotive Mascot Ribbon */}
-            <div className="flex items-center gap-2.5 self-start md:self-auto bg-stone-900/70 border border-[#CEB888]/30 px-3 py-1.5 rounded-lg text-xs">
-              <BoilermakerSpecialTrainIcon size={28} />
-              <div className="text-right">
-                <div className="text-[10px] uppercase font-bold text-stone-400">BENCHMARK MODEL</div>
-                <div className="font-extrabold text-[#CEB888] text-xs tracking-wide">BOILER UP EDITION</div>
-              </div>
-            </div>
-          </div>
-
+        <header className="mb-4 border-b pb-3 relative border-stone-800/80">
           {/* Main Title & Subtitle Matching Original Graphic Exactly */}
-          <div className="mt-3">
+          <div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight">
               The Loyalty Tax:{' '}
               <span
@@ -104,7 +74,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
               </span>
             </h1>
             <p
-              className={`text-sm sm:text-base mt-2 max-w-4xl font-normal leading-relaxed ${
+              className={`text-sm sm:text-base mt-1.5 max-w-4xl font-normal leading-relaxed ${
                 isLight ? 'text-stone-700' : 'text-stone-300'
               }`}
             >
@@ -115,10 +85,10 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
         </header>
 
         {/* --- THREE CORE PANELS (Exact Layout Homage) --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           {/* PANEL 1 (LEFT): THE PROBLEM: THE PERPETUAL DELTA */}
           <div
-            className={`lg:col-span-5 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
+            className={`lg:col-span-6 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
               isLight
                 ? 'bg-stone-50 border-stone-200'
                 : isBlueprint
@@ -166,7 +136,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
 
           {/* PANEL 2 (MIDDLE): TWO INSIGHT BLOCKS */}
           <div
-            className={`lg:col-span-4 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
+            className={`lg:col-span-3 flex flex-col justify-between p-4 sm:p-5 rounded-xl border ${
               isLight
                 ? 'bg-stone-50 border-stone-200'
                 : isBlueprint
@@ -219,7 +189,6 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 THE SOLUTION:
               </span>
               <h2 className="text-base sm:text-lg font-black tracking-tight">CLOSING THE DISTANCE</h2>
-              <p className="text-[11px] text-stone-400 mt-0.5">The Boilermaker 3-Pillar Compensation Strategy</p>
             </div>
 
             {/* The 3 Solution Pillars */}
@@ -230,31 +199,8 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 onSelectPillar={onSelectPillar}
               />
             </div>
-
-            {/* Purdue Tagline & Slogan */}
-            <div className="mt-4 pt-3 border-t border-stone-800/80 flex items-center justify-between text-[11px]">
-              <span className="font-extrabold text-[#CEB888] tracking-wider uppercase">BOILER UP!</span>
-              <span className="text-stone-400 italic">HAMMER DOWN!</span>
-            </div>
           </div>
         </div>
-
-        {/* --- FOOTER STRIP --- */}
-        <footer className="mt-6 pt-4 border-t border-stone-800/70 flex flex-col sm:flex-row items-center justify-between text-[11px] text-stone-400 gap-3">
-          <div className="flex items-center gap-2">
-            <span className={`font-bold ${isLight ? 'text-[#9E7A1C]' : 'text-[#CEB888]'} tracking-wide`}>
-              CAREER COMPENSATION DYNAMICS
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 text-stone-400">
-            <span>Market Inflation Benchmark: 2.5%</span>
-            <span>•</span>
-            <span>Standard Merit: 3.0%</span>
-            <span>•</span>
-            <span className="text-[#CEB888] font-bold">15-Year Delta Divergence Model</span>
-          </div>
-        </footer>
       </div>
     );
   }

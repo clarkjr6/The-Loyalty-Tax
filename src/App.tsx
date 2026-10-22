@@ -28,7 +28,6 @@ import {
 
 export default function App() {
   const [config, setConfig] = useState<SalaryConfig>(DEFAULT_SALARY_CONFIG);
-  const [theme, setTheme] = useState<'dark' | 'light' | 'blueprint'>('dark');
   const [showBoilermakerCurve, setShowBoilermakerCurve] = useState<boolean>(false);
   const [activePillar, setActivePillar] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -76,7 +75,7 @@ export default function App() {
             ref={graphicRef}
             trajectory={trajectory}
             config={config}
-            theme={theme}
+            theme="dark"
             showBoilermakerCurve={showBoilermakerCurve}
             activePillar={activePillar}
             onSelectPillar={(idx) => setActivePillar(activePillar === idx ? null : idx)}
@@ -91,8 +90,6 @@ export default function App() {
               onChangeConfig={setConfig}
               showBoilermakerCurve={showBoilermakerCurve}
               onToggleBoilermakerCurve={handleToggleBoilermaker}
-              theme={theme}
-              onChangeTheme={setTheme}
             />
 
             {/* Purdue Boilermaker Strategic Analysis Insights Card */}
