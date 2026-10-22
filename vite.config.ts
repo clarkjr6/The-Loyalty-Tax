@@ -2,12 +2,16 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
+import {viteSingleFile} from 'vite-plugin-singlefile';
 
-export default defineConfig(() => {
+export default defineConfig(({mode}) => {
+  // `npm run build:single` inlines all JS and CSS into one shareable HTML file.
+  const isSingleFile = mode === 'singlefile';
   return {
     // GitHub Pages serves the site from /<repo>/; the deploy workflow sets BASE_PATH.
     base: process.env.BASE_PATH || '/',
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), ...(isSingleFile ? [viteSingleFile()] : [])],
+    build: {copyPublicDir: !isSingleFile},
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
