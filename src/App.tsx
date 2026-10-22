@@ -9,7 +9,6 @@ import { PurdueMotionP, BoilermakerSpecialTrainIcon, SledgehammerIcon } from './
 import { PurdueGraphic } from './components/PurdueGraphic';
 import { SimulatorControls } from './components/SimulatorControls';
 import { ExportToolbar } from './components/ExportToolbar';
-import { CompareModal } from './components/CompareModal';
 import {
   DEFAULT_SALARY_CONFIG,
   SalaryConfig,
@@ -32,7 +31,6 @@ export default function App() {
   const [theme, setTheme] = useState<'dark' | 'light' | 'blueprint'>('dark');
   const [showBoilermakerCurve, setShowBoilermakerCurve] = useState<boolean>(false);
   const [activePillar, setActivePillar] = useState<number | null>(null);
-  const [isCompareOpen, setIsCompareOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const graphicRef = useRef<HTMLDivElement | null>(null);
@@ -68,7 +66,6 @@ export default function App() {
           graphicRef={graphicRef}
           trajectory={trajectory}
           config={config}
-          onOpenCompare={() => setIsCompareOpen(true)}
           isFullscreen={isFullscreen}
           onToggleFullscreen={() => setIsFullscreen(!isFullscreen)}
         />
@@ -154,9 +151,6 @@ export default function App() {
           </div>
         )}
       </main>
-
-      {/* Compare Modal */}
-      <CompareModal isOpen={isCompareOpen} onClose={() => setIsCompareOpen(false)} />
     </div>
   );
 }

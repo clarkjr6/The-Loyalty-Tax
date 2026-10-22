@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Printer, Copy, Check, Eye, Maximize2, Minimize2, Share2 } from 'lucide-react';
+import { Download, Printer, Copy, Check, Maximize2, Minimize2 } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { TrajectoryResult, SalaryConfig, formatCurrency } from '../utils/salaryCalculations';
 
@@ -7,7 +7,6 @@ interface ExportToolbarProps {
   graphicRef: React.RefObject<HTMLDivElement | null>;
   trajectory: TrajectoryResult;
   config: SalaryConfig;
-  onOpenCompare: () => void;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
 }
@@ -16,7 +15,6 @@ export const ExportToolbar: React.FC<ExportToolbarProps> = ({
   graphicRef,
   trajectory,
   config,
-  onOpenCompare,
   isFullscreen,
   onToggleFullscreen,
 }) => {
@@ -90,14 +88,6 @@ The Boilermaker Solutions:
             {formatCurrency(trajectory.cumulativeLostIncome)}
           </span>
         </div>
-
-        <button
-          onClick={onOpenCompare}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-[#CEB888]/20 hover:text-[#CEB888] text-stone-200 rounded-lg text-xs font-bold transition border border-stone-700"
-        >
-          <Eye className="w-3.5 h-3.5" />
-          <span>Compare With Original Attachment</span>
-        </button>
       </div>
 
       {/* Right items: Export actions */}
