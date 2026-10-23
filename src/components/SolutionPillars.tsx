@@ -90,7 +90,7 @@ export const SolutionPillars: React.FC<SolutionPillarsProps> = ({
     {
       id: 3,
       title: 'DIFFERENTIATE FOR HIGH PERFORMERS',
-      subtitle: 'Reward The Boilermaker Grit',
+      subtitle: 'Reward High-Impact Talent',
       desc: 'Ensure merit guidelines reward top talent with increases substantially higher than the 3% average.',
       boilerTip: 'Allocate merit disproportionately (5% to 8%+) to retain high-impact engineers and leaders.',
       icon: (
@@ -112,7 +112,7 @@ export const SolutionPillars: React.FC<SolutionPillarsProps> = ({
             <text x="35.5" y="41" textAnchor="middle" fill="#000" fontSize="7" fontWeight="900">
               3
             </text>
-            {/* Top Performer Boilermaker Pete with Trophy */}
+            {/* Top Performer with Trophy */}
             <circle cx="24" cy="11" r="3.5" fill="#F8D3B0" stroke="#000" strokeWidth="1" />
             {/* Hard Hat */}
             <rect x="21" y="6" width="6" height="3" rx="1" fill="#CEB888" stroke="#000" strokeWidth="0.8" />
@@ -178,7 +178,7 @@ export const SolutionPillars: React.FC<SolutionPillarsProps> = ({
               </p>
               {isSelected && (
                 <div className="mt-2 pt-2 border-t border-[#CEB888]/30 flex items-center gap-1.5 text-[10px] text-[#CEB888] font-bold">
-                  <span>🚂 Boilermaker Rule:</span>
+                  <span>🎯 Strategic Rule:</span>
                   <span className={isLight ? 'text-stone-800' : 'text-stone-200'}>{pillar.boilerTip}</span>
                 </div>
               )}

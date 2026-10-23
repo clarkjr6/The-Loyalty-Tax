@@ -325,7 +325,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
             fontSize="10.5"
             fontWeight="900"
           >
-            Boilermaker Outpace Strategy
+            Outpace Strategy
           </text>
         )}
 
@@ -414,7 +414,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
             </div>
             {showBoilermakerCurve && hoveredPoint.boilermakerSalary && (
               <div className="flex justify-between text-emerald-400 font-bold border-t border-stone-800 pt-1">
-                <span>Boilermaker Pay:</span>
+                <span>Strategy Pay:</span>
                 <span>{formatCurrency(hoveredPoint.boilermakerSalary)}</span>
               </div>
             )}

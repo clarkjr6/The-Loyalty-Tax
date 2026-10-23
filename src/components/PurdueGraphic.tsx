@@ -159,7 +159,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 </h3>
               </div>
               <InitialMarketLag
-                lagPct={20}
+                lagPct={config.initialLagPercent}
                 theme={theme}
               />
             </div>

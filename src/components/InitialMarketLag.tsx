@@ -6,19 +6,34 @@ interface InitialMarketLagProps {
 }
 
 export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
-  lagPct = 20,
+  lagPct = 10,
   theme = 'dark',
 }) => {
   const isLight = theme === 'light';
 
   // SVG coordinates:
-  // Band runs from x = 30 to x = 330 (width = 300)
-  // Min = x: 30, Mid = x: 180, Max = x: 330
-  // Employee hired at -20% lag from Mid (Mid is 180, -20% corresponds to x = 60)
+  // Band runs from minX (30) to maxX (330), total width 300px
+  // Midpoint = x: 180 (Market Parity, 0% lag)
+  // Entry Min = x: 30 (-25% lag or entry level)
   const minX = 30;
   const midX = 180;
   const maxX = 330;
-  const hiredX = 60;
+
+  // Dynamically position hired marker based on lagPct (supports 0% to 25%+)
+  const maxLagScale = 25;
+  const safeLag = Math.max(0, Math.min(lagPct, 30));
+  const hiredX = safeLag === 0 
+    ? midX 
+    : Math.round(midX - (safeLag / maxLagScale) * (midX - minX - 18));
+
+  const hasDeficit = safeLag > 0;
+  const deficitWidth = Math.max(0, midX - hiredX);
+  const badgeCenter = Math.round((hiredX + midX) / 2);
+  
+  // Adaptive flag layout: at lower lag % (<= 16%), flag HIRED badge to the left of stem to avoid bracket overlap
+  const isTight = safeLag > 0 && safeLag <= 16;
+  const deficitBadgeWidth = deficitWidth < 55 ? 46 : 54;
+  const deficitBadgeText = deficitWidth < 55 ? `-${safeLag}% DEFICIT` : `-${safeLag}% DEFICIT`;
 
   return (
     <div className="flex flex-col items-center w-full" data-testid="initial-market-lag">
@@ -26,7 +41,7 @@ export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
         <svg
           viewBox="0 0 360 82"
           className="w-full h-full overflow-visible"
-          aria-label="Diagram showing pay band range with min, mid, max and employee hired with -20% market lag"
+          aria-label={`Diagram showing pay band range with min, mid, max and employee hired with -${lagPct}% market lag`}
         >
           <defs>
             <linearGradient id="payBandGradTight" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -65,54 +80,58 @@ export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
           />
 
           {/* Deficit Span Highlight (from Hired to Mid) */}
-          <rect
-            x={hiredX}
-            y="34"
-            width={midX - hiredX}
-            height="10"
-            fill="#F59E0B"
-            fillOpacity="0.3"
-            rx="2"
-          />
+          {hasDeficit && (
+            <rect
+              x={hiredX}
+              y="34"
+              width={deficitWidth}
+              height="10"
+              fill="#F59E0B"
+              fillOpacity="0.3"
+              rx="2"
+            />
+          )}
 
           {/* --- GAP BRACKET BETWEEN HIRED AND MIDPOINT --- */}
-          <g>
-            <line
-              x1={hiredX + 4}
-              y1="20"
-              x2={midX - 4}
-              y2="20"
-              stroke="#F43F5E"
-              strokeWidth="1"
-              strokeDasharray="3 2"
-            />
-            <line x1={hiredX + 4} y1="17" x2={hiredX + 4} y2="23" stroke="#F43F5E" strokeWidth="1" />
-            <line x1={midX - 4} y1="17" x2={midX - 4} y2="23" stroke="#F43F5E" strokeWidth="1" />
+          {hasDeficit && deficitWidth > 12 && (
+            <g>
+              <line
+                x1={hiredX + 3}
+                y1="20"
+                x2={midX - 3}
+                y2="20"
+                stroke="#F43F5E"
+                strokeWidth="1"
+                strokeDasharray="3 2"
+              />
+              <line x1={hiredX + 3} y1="17" x2={hiredX + 3} y2="23" stroke="#F43F5E" strokeWidth="1" />
+              <line x1={midX - 3} y1="17" x2={midX - 3} y2="23" stroke="#F43F5E" strokeWidth="1" />
 
-            {/* Gap Delta Badge */}
-            <rect
-              x={(hiredX + midX) / 2 - 28}
-              y="11"
-              width="56"
-              height="15"
-              rx="2.5"
-              fill={isLight ? '#FFFFFF' : '#18181B'}
-              stroke="#F43F5E"
-              strokeWidth="0.8"
-            />
-            <text
-              x={(hiredX + midX) / 2}
-              y="21.5"
-              textAnchor="middle"
-              fill="#F43F5E"
-              fontSize="7.5"
-              fontWeight="900"
-              letterSpacing="0.03em"
-              fontFamily="Inter, sans-serif"
-            >
-              -{lagPct}% DEFICIT
-            </text>
-          </g>
+              {/* Gap Delta Badge */}
+              <rect
+                x={badgeCenter - deficitBadgeWidth / 2}
+                y="12"
+                width={deficitBadgeWidth}
+                height="15"
+                rx="2.5"
+                fill={isLight ? '#FFFFFF' : '#18181B'}
+                stroke="#F43F5E"
+                strokeWidth="0.8"
+              />
+              <text
+                x={badgeCenter}
+                y="22.5"
+                textAnchor="middle"
+                fill="#F43F5E"
+                fontSize={deficitBadgeWidth < 50 ? '7' : '7.5'}
+                fontWeight="900"
+                letterSpacing="0.02em"
+                fontFamily="Inter, sans-serif"
+              >
+                {deficitBadgeText}
+              </text>
+            </g>
+          )}
 
           {/* --- TICK: MIN (Left) --- */}
           <g transform={`translate(${minX}, 0)`}>
@@ -197,26 +216,26 @@ export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
             </text>
           </g>
 
-          {/* --- EMPLOYEE HIRE MARKER (-20% LAG) --- */}
+          {/* --- EMPLOYEE HIRE MARKER --- */}
           <g transform={`translate(${hiredX}, 0)`} filter="url(#lagMarkerShadowTight)">
-            <line x1="0" y1="12" x2="0" y2="39" stroke="#F59E0B" strokeWidth="1.5" />
-            <circle cx="0" cy="39" r="4.5" fill="#F59E0B" stroke="#000000" strokeWidth="1.5" />
+            <line x1="0" y1="12" x2="0" y2="39" stroke={hasDeficit ? '#F59E0B' : '#2DD4BF'} strokeWidth="1.5" />
+            <circle cx="0" cy="39" r="4.5" fill={hasDeficit ? '#F59E0B' : '#2DD4BF'} stroke="#000000" strokeWidth="1.5" />
             <circle cx="0" cy="39" r="1.5" fill="#FFFFFF" />
 
-            {/* Top Badge: "HIRED: -20%" */}
+            {/* Top Badge: "HIRED: -X%" or "HIRED: PARITY" */}
             <g transform="translate(0, 1)">
               <rect
-                x="-30"
+                x={isTight ? -54 : -28}
                 y="-5"
-                width="60"
+                width={isTight ? 54 : 56}
                 height="15"
                 rx="3"
-                fill="#B45309"
-                stroke="#FBBF24"
+                fill={hasDeficit ? '#B45309' : '#0F766E'}
+                stroke={hasDeficit ? '#FBBF24' : '#2DD4BF'}
                 strokeWidth="1"
               />
               <text
-                x="0"
+                x={isTight ? -27 : 0}
                 y="5.5"
                 textAnchor="middle"
                 fill="#FFFFFF"
@@ -225,7 +244,7 @@ export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
                 letterSpacing="0.02em"
                 fontFamily="Inter, sans-serif"
               >
-                HIRED: -{lagPct}%
+                {hasDeficit ? `HIRED: -${lagPct}%` : 'HIRED: PARITY'}
               </text>
             </g>
           </g>
@@ -237,7 +256,15 @@ export const InitialMarketLag: React.FC<InitialMarketLagProps> = ({
           isLight ? 'text-stone-700' : 'text-stone-300'
         }`}
       >
-        Hired <span className="font-extrabold text-amber-500">-{lagPct}% below market midpoint</span>, starting in an immediate deficit.
+        {hasDeficit ? (
+          <>
+            Hired <span className="font-extrabold text-amber-500">-{lagPct}% below market midpoint</span>, starting in an immediate deficit.
+          </>
+        ) : (
+          <>
+            Hired <span className="font-extrabold text-teal-400">at market parity</span>, but merit caps still produce career lag over time.
+          </>
+        )}
       </p>
     </div>
   );

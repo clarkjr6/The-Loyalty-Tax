@@ -28,7 +28,8 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
       data-testid="simulator-controls"
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-stone-800 pb-3 mb-4">
-        <div className="flex items-center gap-2">
+        {/* Title and 2-line description */}
+        <div className="flex items-center gap-2.5 shrink-0">
           <Sliders className="w-5 h-5 text-[#CEB888] shrink-0" />
           <div>
             <h3 className="font-extrabold text-sm text-stone-100 flex items-center gap-2">
@@ -37,18 +38,68 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
                 LIVE
               </span>
             </h3>
-            <p className="text-xs text-stone-400">
-              Adjust variables to test career compensation scenarios and watch the graphic recalculate in real-time.
-            </p>
+            <div className="text-[11px] text-stone-400 leading-tight mt-0.5">
+              <div>Adjust variables to test career compensation scenarios</div>
+              <div>and watch the graphic recalculate in real-time.</div>
+            </div>
           </div>
         </div>
 
-        {/* Actions: Activate Solution Curve & Reset Button */}
-        <div className="flex items-center gap-3 flex-wrap">
+        {/* Two sliders that feed into the Solution Curve */}
+        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+          {/* Solution Promotion Cap Slider */}
+          <div className="bg-stone-950/80 px-2.5 py-1.5 rounded-lg border border-emerald-900/60 w-36 sm:w-40 lg:w-44">
+            <div className="flex justify-between items-center text-[11px] mb-0.5">
+              <span className="text-emerald-400 font-bold truncate">Promo Cap</span>
+              <span className="font-extrabold text-emerald-300">
+                +{config.boilermakerPromoRaisePercent ?? 20}%
+              </span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={30}
+              step={1}
+              value={config.boilermakerPromoRaisePercent ?? 20}
+              onChange={(e) => updateField('boilermakerPromoRaisePercent', Number(e.target.value))}
+              className="w-full accent-emerald-400 h-1 bg-stone-800 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[9px] text-stone-400 mt-0.5">
+              <span>10%</span>
+              <span>30%</span>
+            </div>
+          </div>
+
+          {/* Solution Merit Amount Slider */}
+          <div className="bg-stone-950/80 px-2.5 py-1.5 rounded-lg border border-emerald-900/60 w-36 sm:w-40 lg:w-44">
+            <div className="flex justify-between items-center text-[11px] mb-0.5">
+              <span className="text-emerald-400 font-bold truncate">Merit Amount</span>
+              <span className="font-extrabold text-emerald-300">
+                +{(config.boilermakerMeritPercent ?? 4.8).toFixed(1)}%
+              </span>
+            </div>
+            <input
+              type="range"
+              min={3.0}
+              max={8.0}
+              step={0.1}
+              value={config.boilermakerMeritPercent ?? 4.8}
+              onChange={(e) => updateField('boilermakerMeritPercent', Number(e.target.value))}
+              className="w-full accent-emerald-400 h-1 bg-stone-800 rounded-lg cursor-pointer"
+            />
+            <div className="flex justify-between text-[9px] text-stone-400 mt-0.5">
+              <span>3.0%</span>
+              <span>8.0%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions: Activate Solution Curve & Reset Button (closer together) */}
+        <div className="flex items-center gap-2 shrink-0">
           {/* Solution Curve Toggle Button */}
           <button
             onClick={() => onToggleBoilermakerCurve(!showBoilermakerCurve)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md ${
               showBoilermakerCurve
                 ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border border-emerald-400 shadow-emerald-900/30'
                 : 'bg-stone-950 hover:bg-stone-800 text-stone-300 border border-stone-800'
@@ -58,13 +109,12 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
             <span>
               {showBoilermakerCurve ? '✓ Strategy Active' : 'Activate Solution Curve'}
             </span>
-            <span className="text-[10px] opacity-80 font-normal hidden sm:inline">(Eliminates 10% cap + 4.8% merit)</span>
           </button>
 
           {/* Reset Button */}
           <button
             onClick={() => onChangeConfig({ ...DEFAULT_SALARY_CONFIG })}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-xs font-semibold transition border border-stone-700"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-xs font-semibold transition border border-stone-700"
             title="Reset to default infographic numbers"
           >
             <RotateCcw className="w-3.5 h-3.5" />

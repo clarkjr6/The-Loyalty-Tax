@@ -56,7 +56,7 @@ Key Drivers:
 1. Internal Merit (${config.annualMeritPercent}%) barely exceeds Market Inflation (${config.annualMarketInflationPercent}%)
 2. Promotional Cap (+${config.promoRaisePercent}%) fails to match Next-Level Market Jump (+${config.marketPromoJumpPercent}%)
 
-The Boilermaker Solutions:
+The Strategic Solutions:
 1. Eliminate Promotional Caps (Hammer down the 10% ceiling)
 2. Lead the Moving Target (Aggressive market adjustments)
 3. Differentiate for High Performers (5%-8%+ merit rewards)
