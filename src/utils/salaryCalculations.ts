@@ -28,6 +28,15 @@ export interface TrajectoryYearPoint {
   boilermakerDelta?: number;
 }
 
+export interface CrossoverResult {
+  hasCrossover: boolean;
+  crossoverYear: number;
+  crossoverSalary: number;
+  additionalCumulativeDollars: number;
+  formattedTime: string;
+  formattedAdditionalDollars: string;
+}
+
 export interface TrajectoryResult {
   timeline: TrajectoryYearPoint[];
   startMarketSalary: number;
@@ -39,6 +48,7 @@ export interface TrajectoryResult {
   cumulativeLostIncome: number;
   endBoilermakerSalary?: number;
   cumulativeBoilermakerGain?: number;
+  crossover: CrossoverResult;
 }
 
 export const DEFAULT_SALARY_CONFIG: SalaryConfig = {
@@ -116,6 +126,62 @@ export function calculateSalaryTrajectories(config: Partial<SalaryConfig> = {}):
     });
   }
 
+  // Calculate Crossover: When the Outpace (Boilermaker) Strategy overtakes External Market Growth
+  let hasCrossover = false;
+  let crossoverYear = 0;
+  let crossoverSalary = 0;
+  let additionalCumulativeDollars = 0;
+
+  const startBm = timeline[0].boilermakerSalary ?? timeline[0].internalSalary;
+  if (startBm >= timeline[0].marketSalary) {
+    hasCrossover = true;
+    crossoverYear = 0;
+    crossoverSalary = timeline[0].marketSalary;
+    additionalCumulativeDollars = 0;
+  } else {
+    for (let y = 1; y < timeline.length; y++) {
+      const prev = timeline[y - 1];
+      const curr = timeline[y];
+      const prevBm = prev.boilermakerSalary ?? prev.internalSalary;
+      const currBm = curr.boilermakerSalary ?? curr.internalSalary;
+
+      const prevDiff = prevBm - prev.marketSalary; // < 0
+      const currDiff = currBm - curr.marketSalary; // >= 0 if crossed
+
+      if (prevDiff < 0 && currDiff >= 0) {
+        hasCrossover = true;
+        const fraction = Math.abs(prevDiff) / (currDiff - prevDiff);
+        crossoverYear = Number(((y - 1) + fraction).toFixed(1));
+        crossoverSalary = Math.round(prev.marketSalary + fraction * (curr.marketSalary - prev.marketSalary));
+
+        // Additional dollars needed: sum of extra salary paid (Outpace - Internal) up to crossover
+        let extra = 0;
+        for (let k = 1; k < y; k++) {
+          const pt = timeline[k];
+          const bm = pt.boilermakerSalary ?? pt.internalSalary;
+          extra += Math.max(0, bm - pt.internalSalary);
+        }
+        const finalYearExtra = currBm - curr.internalSalary;
+        extra += Math.max(0, Math.round(fraction * finalYearExtra));
+        additionalCumulativeDollars = extra;
+        break;
+      }
+    }
+  }
+
+  const crossover: CrossoverResult = {
+    hasCrossover,
+    crossoverYear,
+    crossoverSalary,
+    additionalCumulativeDollars,
+    formattedTime: hasCrossover
+      ? `${crossoverYear} ${crossoverYear === 1 ? 'Year' : 'Years'}`
+      : 'No Crossover',
+    formattedAdditionalDollars: hasCrossover
+      ? `+${formatCurrency(additionalCumulativeDollars)}`
+      : 'N/A',
+  };
+
   const finalPoint = timeline[timeline.length - 1];
 
   return {
@@ -129,6 +195,7 @@ export function calculateSalaryTrajectories(config: Partial<SalaryConfig> = {}):
     cumulativeLostIncome: cumulativeLoss,
     endBoilermakerSalary: finalPoint.boilermakerSalary,
     cumulativeBoilermakerGain,
+    crossover,
   };
 }
 

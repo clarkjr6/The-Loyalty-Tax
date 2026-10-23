@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sliders, RotateCcw, Sparkles, TrendingUp, DollarSign, Percent } from 'lucide-react';
+import { Sliders, RotateCcw, Sparkles, TrendingUp, DollarSign, Percent, Check } from 'lucide-react';
 import { SalaryConfig, DEFAULT_SALARY_CONFIG, formatCurrency } from '../utils/salaryCalculations';
 
 interface SimulatorControlsProps {
@@ -27,7 +27,7 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
       className="w-full bg-stone-900/90 border border-stone-800 rounded-xl p-4 text-stone-200 shadow-xl"
       data-testid="simulator-controls"
     >
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b border-stone-800 pb-3 mb-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 lg:gap-4 border-b border-stone-800 pb-3 mb-4">
         {/* Title and 2-line description */}
         <div className="flex items-center gap-2.5 shrink-0">
           <Sliders className="w-5 h-5 text-[#CEB888] shrink-0" />
@@ -45,11 +45,31 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
           </div>
         </div>
 
-        {/* Two sliders that feed into the Solution Curve */}
-        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+        {/* Faint gold vertical divider between Title and Solution Curve group */}
+        <div
+          className="hidden lg:block w-px h-10 bg-gradient-to-b from-[#CEB888]/5 via-[#CEB888]/35 to-[#CEB888]/5 shrink-0 self-center"
+          aria-hidden="true"
+        />
+
+        {/* Grouped Solution Curve controls (Promo Cap slider + Merit Amount slider + Activate Button) */}
+        <div
+          className={`flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-2.5 p-1.5 sm:px-3 sm:py-2 rounded-xl border transition-all duration-300 ${
+            showBoilermakerCurve
+              ? 'bg-emerald-950/30 border-emerald-500/50 shadow-lg shadow-emerald-950/40 ring-1 ring-emerald-500/25'
+              : 'bg-emerald-950/20 border-emerald-700/30 hover:border-emerald-600/40'
+          }`}
+        >
+          {/* Subtle association indicator/badge */}
+          <div className="hidden xl:flex items-center gap-1.5 pr-1 border-r border-emerald-800/40 text-emerald-400/90 shrink-0">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+              Solution Curve
+            </span>
+          </div>
+
           {/* Solution Promotion Cap Slider */}
-          <div className="bg-stone-950/80 px-2.5 py-1.5 rounded-lg border border-emerald-900/60 w-36 sm:w-40 lg:w-44">
-            <div className="flex justify-between items-center text-[11px] mb-0.5">
+          <div className="bg-stone-950/90 px-2.5 py-1.5 rounded-lg border border-emerald-900/70 w-32 sm:w-36 lg:w-36 xl:w-40 shadow-inner">
+            <div className="flex justify-between items-center text-[10px] mb-0.5">
               <span className="text-emerald-400 font-bold truncate">Promo Cap</span>
               <span className="font-extrabold text-emerald-300">
                 +{config.boilermakerPromoRaisePercent ?? 20}%
@@ -71,8 +91,8 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
           </div>
 
           {/* Solution Merit Amount Slider */}
-          <div className="bg-stone-950/80 px-2.5 py-1.5 rounded-lg border border-emerald-900/60 w-36 sm:w-40 lg:w-44">
-            <div className="flex justify-between items-center text-[11px] mb-0.5">
+          <div className="bg-stone-950/90 px-2.5 py-1.5 rounded-lg border border-emerald-900/70 w-32 sm:w-36 lg:w-36 xl:w-40 shadow-inner">
+            <div className="flex justify-between items-center text-[10px] mb-0.5">
               <span className="text-emerald-400 font-bold truncate">Merit Amount</span>
               <span className="font-extrabold text-emerald-300">
                 +{(config.boilermakerMeritPercent ?? 4.8).toFixed(1)}%
@@ -92,35 +112,45 @@ export const SimulatorControls: React.FC<SimulatorControlsProps> = ({
               <span>8.0%</span>
             </div>
           </div>
-        </div>
 
-        {/* Actions: Activate Solution Curve & Reset Button (closer together) */}
-        <div className="flex items-center gap-2 shrink-0">
           {/* Solution Curve Toggle Button */}
           <button
             onClick={() => onToggleBoilermakerCurve(!showBoilermakerCurve)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-md ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold transition-all shadow-md shrink-0 cursor-pointer ${
               showBoilermakerCurve
-                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border border-emerald-400 shadow-emerald-900/30'
-                : 'bg-stone-950 hover:bg-stone-800 text-stone-300 border border-stone-800'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white border border-emerald-300 shadow-emerald-900/40 ring-1 ring-emerald-400/50'
+                : 'bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400/60'
             }`}
           >
-            <Sparkles className={`w-3.5 h-3.5 ${showBoilermakerCurve ? 'text-yellow-200' : 'text-[#CEB888]'}`} />
-            <span>
-              {showBoilermakerCurve ? '✓ Strategy Active' : 'Activate Solution Curve'}
-            </span>
-          </button>
-
-          {/* Reset Button */}
-          <button
-            onClick={() => onChangeConfig({ ...DEFAULT_SALARY_CONFIG })}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-lg text-xs font-semibold transition border border-stone-700"
-            title="Reset to default infographic numbers"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Sliders</span>
+            {showBoilermakerCurve ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-white" />
+                <span>Solution Active</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Activate Solution Curve</span>
+              </>
+            )}
           </button>
         </div>
+
+        {/* Faint gold vertical divider between Solution Curve group and Reset Sliders */}
+        <div
+          className="hidden lg:block w-px h-10 bg-gradient-to-b from-[#CEB888]/5 via-[#CEB888]/35 to-[#CEB888]/5 shrink-0 self-center"
+          aria-hidden="true"
+        />
+
+        {/* Reset Button */}
+        <button
+          onClick={() => onChangeConfig({ ...DEFAULT_SALARY_CONFIG })}
+          className="flex items-center gap-1.5 px-3 py-2 bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-stone-100 rounded-lg text-xs font-semibold transition border border-stone-700 shrink-0 cursor-pointer self-center"
+          title="Reset to default infographic numbers"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          <span>Reset Sliders</span>
+        </button>
       </div>
 
       {/* Sliders Grid */}

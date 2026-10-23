@@ -4,18 +4,22 @@ import { TrajectoryResult, formatCurrency } from '../utils/salaryCalculations';
 interface TrajectoryChartProps {
   trajectory: TrajectoryResult;
   showBoilermakerCurve?: boolean;
+  onToggleBoilermakerCurve?: (val: boolean) => void;
   theme?: 'dark' | 'light' | 'blueprint';
 }
 
 export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
   trajectory,
   showBoilermakerCurve = false,
+  onToggleBoilermakerCurve,
   theme = 'dark',
 }) => {
   const [hoveredYear, setHoveredYear] = useState<number | null>(null);
 
   const points = trajectory.timeline;
   if (!points || points.length === 0) return null;
+
+  const crossover = trajectory.crossover;
 
   // SVG viewBox coordinates
   const width = 760;
@@ -27,9 +31,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
 
   // Calculate scales
   const minSalary = Math.min(...points.map((p) => p.internalSalary)) * 0.95;
-  const maxSalary = Math.max(
-    ...points.map((p) => Math.max(p.marketSalary, showBoilermakerCurve ? (p.boilermakerSalary ?? 0) : 0))
-  ) * 1.05;
+  const maxSalary = Math.max(...points.map((p) => p.marketSalary)) * 1.06;
 
   const getX = (year: number) => padding.left + (year / 15) * plotWidth;
   const getY = (val: number) => padding.top + plotHeight - ((val - minSalary) / (maxSalary - minSalary)) * plotHeight;
@@ -37,7 +39,35 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
   // Path coordinates
   const marketCoords = points.map((p) => ({ x: getX(p.year), y: getY(p.marketSalary) }));
   const internalCoords = points.map((p) => ({ x: getX(p.year), y: getY(p.internalSalary) }));
-  const boilermakerCoords = points.map((p) => ({ x: getX(p.year), y: getY(p.boilermakerSalary ?? p.internalSalary) }));
+
+  // Boilermaker (Outpace Strategy) coords: Stop at crossover if crossed!
+  const boilermakerCoords: { x: number; y: number }[] = [];
+  if (showBoilermakerCurve) {
+    if (crossover.hasCrossover && crossover.crossoverYear < 15) {
+      const floorYr = Math.floor(crossover.crossoverYear);
+      for (let y = 0; y <= floorYr; y++) {
+        const pt = points[y];
+        boilermakerCoords.push({
+          x: getX(pt.year),
+          y: getY(pt.boilermakerSalary ?? pt.internalSalary),
+        });
+      }
+      if (crossover.crossoverYear > floorYr || floorYr === 0) {
+        boilermakerCoords.push({
+          x: getX(crossover.crossoverYear),
+          y: getY(crossover.crossoverSalary),
+        });
+      }
+    } else {
+      for (let y = 0; y < points.length; y++) {
+        const pt = points[y];
+        boilermakerCoords.push({
+          x: getX(pt.year),
+          y: getY(pt.boilermakerSalary ?? pt.internalSalary),
+        });
+      }
+    }
+  }
 
   const buildPath = (coords: { x: number; y: number }[]) => {
     return coords.reduce((acc, pt, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`, '');
@@ -167,6 +197,158 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
           fill={axisColor}
         />
 
+        {/* UPPER LEFT METRIC BOXES: TIME TO OVERTAKE & ADDITIONAL DOLLARS */}
+        <g
+          className="transition-all duration-300 cursor-pointer"
+          onClick={() => onToggleBoilermakerCurve?.(!showBoilermakerCurve)}
+          role="button"
+          tabIndex={0}
+        >
+          {/* Box 1: Time to Overtake */}
+          <g>
+            <rect
+              x="62"
+              y="50"
+              width="142"
+              height="58"
+              rx="8"
+              fill={isLight ? '#FFFFFF' : '#121212'}
+              fillOpacity={isLight ? 0.98 : 0.94}
+              stroke={showBoilermakerCurve ? '#10B981' : isLight ? '#D6D3D1' : '#3F3F46'}
+              strokeWidth={showBoilermakerCurve ? 1.5 : 1}
+              strokeDasharray={showBoilermakerCurve ? undefined : '3 3'}
+            />
+            {/* Top accent bar */}
+            <rect
+              x="62"
+              y="50"
+              width="142"
+              height="3"
+              rx="1.5"
+              fill={showBoilermakerCurve ? '#10B981' : isLight ? '#A8A29E' : '#52525B'}
+            />
+            <text
+              x="72"
+              y="67"
+              fill={showBoilermakerCurve ? '#10B981' : isLight ? '#78716C' : '#A1A1AA'}
+              fontSize="7.8"
+              fontWeight="800"
+              letterSpacing="0.06em"
+              fontFamily="Inter, sans-serif"
+            >
+              TIME TO OVERTAKE
+            </text>
+            <text
+              x="72"
+              y="88"
+              fill={
+                showBoilermakerCurve
+                  ? crossover.hasCrossover
+                    ? textColor
+                    : '#F87171'
+                  : isLight
+                  ? '#78716C'
+                  : '#71717A'
+              }
+              fontSize={showBoilermakerCurve && crossover.hasCrossover ? '16' : '12.5'}
+              fontWeight="900"
+              fontFamily="Inter, sans-serif"
+            >
+              {showBoilermakerCurve
+                ? crossover.hasCrossover
+                  ? crossover.formattedTime
+                  : '> 15 Years'
+                : 'Never (Lag Widens)'}
+            </text>
+            <text
+              x="72"
+              y="100"
+              fill={isLight ? '#78716C' : '#71717A'}
+              fontSize="7.2"
+              fontWeight="600"
+              fontFamily="Inter, sans-serif"
+            >
+              {showBoilermakerCurve
+                ? crossover.hasCrossover
+                  ? 'Reaches Market Parity'
+                  : 'Raise pace too slow'
+                : 'Click to activate solution'}
+            </text>
+          </g>
+
+          {/* Box 2: Additional Dollars */}
+          <g>
+            <rect
+              x="214"
+              y="50"
+              width="146"
+              height="58"
+              rx="8"
+              fill={isLight ? '#FFFFFF' : '#121212'}
+              fillOpacity={isLight ? 0.98 : 0.94}
+              stroke={showBoilermakerCurve ? '#CEB888' : isLight ? '#D6D3D1' : '#3F3F46'}
+              strokeWidth={showBoilermakerCurve ? 1.5 : 1}
+              strokeDasharray={showBoilermakerCurve ? undefined : '3 3'}
+            />
+            {/* Top accent bar */}
+            <rect
+              x="214"
+              y="50"
+              width="146"
+              height="3"
+              rx="1.5"
+              fill={showBoilermakerCurve ? '#CEB888' : isLight ? '#A8A29E' : '#52525B'}
+            />
+            <text
+              x="224"
+              y="67"
+              fill={showBoilermakerCurve ? '#CEB888' : isLight ? '#78716C' : '#A1A1AA'}
+              fontSize="7.8"
+              fontWeight="800"
+              letterSpacing="0.06em"
+              fontFamily="Inter, sans-serif"
+            >
+              ADDITIONAL DOLLARS
+            </text>
+            <text
+              x="224"
+              y="88"
+              fill={
+                showBoilermakerCurve
+                  ? crossover.hasCrossover
+                    ? '#CEB888'
+                    : '#A1A1AA'
+                  : isLight
+                  ? '#78716C'
+                  : '#71717A'
+              }
+              fontSize={showBoilermakerCurve && crossover.hasCrossover ? '16' : '12.5'}
+              fontWeight="900"
+              fontFamily="Inter, sans-serif"
+            >
+              {showBoilermakerCurve
+                ? crossover.hasCrossover
+                  ? crossover.formattedAdditionalDollars
+                  : 'N/A'
+                : '$0 (Standard Pay)'}
+            </text>
+            <text
+              x="224"
+              y="100"
+              fill={isLight ? '#78716C' : '#71717A'}
+              fontSize="7.2"
+              fontWeight="600"
+              fontFamily="Inter, sans-serif"
+            >
+              {showBoilermakerCurve
+                ? crossover.hasCrossover
+                  ? 'Cumulative extra to parity'
+                  : 'No catch-up investment'
+                : 'Click to calculate cost'}
+            </text>
+          </g>
+        </g>
+
         {/* External Market Growth Line (Blue / Cyan with Gold nodes) */}
         <path
           d={marketLinePath}
@@ -185,16 +367,67 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
           strokeLinecap="round"
         />
 
-        {/* Boilermaker Strategy Line */}
+        {/* Outpace Strategy Line (stops at crossover point if active) */}
         {showBoilermakerCurve && (
-          <path
-            d={boilermakerLinePath}
-            fill="none"
-            stroke="#10B981"
-            strokeWidth="3.5"
-            strokeDasharray="6 4"
-            strokeLinecap="round"
-          />
+          <>
+            <path
+              d={boilermakerLinePath}
+              fill="none"
+              stroke="#10B981"
+              strokeWidth="3.5"
+              strokeDasharray="6 4"
+              strokeLinecap="round"
+            />
+            {crossover.hasCrossover && (
+              <g
+                transform={`translate(${getX(crossover.crossoverYear)}, ${getY(crossover.crossoverSalary)})`}
+                className="transition-all"
+              >
+                <circle cx="0" cy="0" r="10" fill="#10B981" fillOpacity="0.25" className="animate-pulse" />
+                <circle cx="0" cy="0" r="5.5" fill="#10B981" stroke="#000000" strokeWidth="2" />
+                <circle cx="0" cy="0" r="2" fill="#FFFFFF" />
+
+                {/* Label to the left of the crossover node */}
+                <text
+                  x={crossover.crossoverYear < 2 ? 10 : -10}
+                  y="-14"
+                  textAnchor={crossover.crossoverYear < 2 ? 'start' : 'end'}
+                  fill="#10B981"
+                  fontSize="10"
+                  fontWeight="900"
+                  letterSpacing="0.02em"
+                  fontFamily="Inter, sans-serif"
+                >
+                  Outpace Strategy
+                </text>
+                <text
+                  x={crossover.crossoverYear < 2 ? 10 : -10}
+                  y="-4"
+                  textAnchor={crossover.crossoverYear < 2 ? 'start' : 'end'}
+                  fill="#CEB888"
+                  fontSize="8"
+                  fontWeight="800"
+                  letterSpacing="0.04em"
+                  fontFamily="Inter, sans-serif"
+                >
+                  PARITY (Yr {crossover.crossoverYear})
+                </text>
+              </g>
+            )}
+            {!crossover.hasCrossover && (
+              <text
+                x={getX(14.8)}
+                y={getY(points[15].boilermakerSalary ?? 0) - 10}
+                textAnchor="end"
+                fill="#10B981"
+                fontSize="10.5"
+                fontWeight="900"
+                fontFamily="Inter, sans-serif"
+              >
+                Outpace Strategy
+              </text>
+            )}
+          </>
         )}
 
         {/* --- CALLOUTS --- */}
@@ -316,19 +549,6 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
           </text>
         </g>
 
-        {showBoilermakerCurve && (
-          <text
-            x={getX(14.8)}
-            y={getY(points[15].boilermakerSalary ?? 0) - 10}
-            textAnchor="end"
-            fill="#10B981"
-            fontSize="10.5"
-            fontWeight="900"
-          >
-            Outpace Strategy
-          </text>
-        )}
-
         {/* X Axis Year Labels */}
         {[0, 5, 10, 15].map((year) => (
           <g key={`xtick-${year}`} transform={`translate(${getX(year)}, ${height - padding.bottom})`}>
@@ -376,7 +596,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
             />
             <circle cx={getX(hoveredPoint.year)} cy={getY(hoveredPoint.marketSalary)} r="6" fill={marketColor} stroke="#000" strokeWidth="2" />
             <circle cx={getX(hoveredPoint.year)} cy={getY(hoveredPoint.internalSalary)} r="6" fill={internalColor} stroke="#000" strokeWidth="2" />
-            {showBoilermakerCurve && (
+            {showBoilermakerCurve && (!crossover.hasCrossover || hoveredPoint.year <= Math.ceil(crossover.crossoverYear)) && (
               <circle cx={getX(hoveredPoint.year)} cy={getY(hoveredPoint.boilermakerSalary ?? 0)} r="6" fill="#10B981" stroke="#000" strokeWidth="2" />
             )}
           </g>
@@ -412,7 +632,7 @@ export const TrajectoryChart: React.FC<TrajectoryChartProps> = ({
                 -{formatCurrency(hoveredPoint.deltaAmount)} ({hoveredPoint.deltaPercent}%)
               </span>
             </div>
-            {showBoilermakerCurve && hoveredPoint.boilermakerSalary && (
+            {showBoilermakerCurve && hoveredPoint.boilermakerSalary && (!crossover.hasCrossover || hoveredPoint.year <= Math.ceil(crossover.crossoverYear)) && (
               <div className="flex justify-between text-emerald-400 font-bold border-t border-stone-800 pt-1">
                 <span>Strategy Pay:</span>
                 <span>{formatCurrency(hoveredPoint.boilermakerSalary)}</span>

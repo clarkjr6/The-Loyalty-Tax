@@ -10,6 +10,7 @@ interface PurdueGraphicProps {
   config: SalaryConfig;
   theme?: 'dark' | 'light' | 'blueprint';
   showBoilermakerCurve?: boolean;
+  onToggleBoilermakerCurve?: (val: boolean) => void;
   activePillar?: number | null;
   onSelectPillar?: (idx: number) => void;
 }
@@ -21,6 +22,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
       config,
       theme = 'dark',
       showBoilermakerCurve = false,
+      onToggleBoilermakerCurve,
       activePillar,
       onSelectPillar,
     },
@@ -109,6 +111,7 @@ export const PurdueGraphic = forwardRef<HTMLDivElement, PurdueGraphicProps>(
                 <TrajectoryChart
                   trajectory={trajectory}
                   showBoilermakerCurve={showBoilermakerCurve}
+                  onToggleBoilermakerCurve={onToggleBoilermakerCurve}
                   theme={theme}
                 />
               </div>

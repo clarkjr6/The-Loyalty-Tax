@@ -78,6 +78,7 @@ export default function App() {
             config={config}
             theme="dark"
             showBoilermakerCurve={showBoilermakerCurve}
+            onToggleBoilermakerCurve={handleToggleBoilermaker}
             activePillar={activePillar}
             onSelectPillar={(idx) => setActivePillar(activePillar === idx ? null : idx)}
           />
